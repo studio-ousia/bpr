@@ -30,7 +30,45 @@ pip install -r requirements.txt
 
 ## Trained Models
 
-(coming soon)
+**BPR fine-tuned on the Natural Questions dataset:**
+
+* [Checkpoint file](https://drive.google.com/file/d/1BibJ0GQn6rvKfEBksPMeyx-vl3s57vT7/view?usp=sharing) (836MB)
+* [Index file](https://drive.google.com/file/d/1hTnTi1r_6lGfUmJ9RWbx3ciX8r6GDrOT/view?usp=sharing) (2.1GB)
+
+**BPR fine-tuned on the TriviaQA dataset:**
+
+* [Checkpoint file](https://drive.google.com/file/d/1ehbpUo0EmAW61Jc72xi1S02548p0Dw6I/view?usp=sharing) (836MB)
+* [Index file](https://drive.google.com/file/d/1EqGAkxIrg6TkVG72kCYMdH7jUIsQFvte/view?usp=sharing) (2.1GB)
+
+## Example Usage
+
+
+```python
+>>> from bpr import BiEncoder, FaissBinaryIndex, InMemoryPassageDB, Retriever
+>>> import faiss
+# Load the model from the checkpoint file
+>>> biencoder = BiEncoder.load_from_checkpoint("<CHECKPOINT_FILE>")
+>>> biencoder.eval()
+>>> biencoder.freeze()
+# Load Wikipedia passages into memory
+>>> passage_db = InMemoryPassageDB("<DPR_DATASET_DIR>/wikipedia_split/psgs_w100.tsv")
+# Load the index
+>>> base_index = faiss.read_index_binary("<INDEX_FILE>")
+>>> index = FaissBinaryIndex(base_index)
+# Instantiate the Retriever
+>>> retriever = Retriever(index, biencoder, passage_db)
+# Encode queries into embeddings
+>>> query_embeddings = retriever.encode_queries(["who is under the mask of darth vader"])
+# Get top-k results
+>>> retriever.search(query_embeddings, k=100)[0][0]
+Candidate(id=650642, score=95.28644561767578, passage=Passage(id=650642, title='Darth Vader', text="that McQuarrie's earliest conception of Vader was so successful that very little needed to be changed for production. Working from McQuarrie's designs, the costume designer John Mollo devised a costume that could be worn by an actor on-screen using a combination of clerical robes, a motorcycle suit, a German military helmet and a gas mask. The prop sculptor Brian Muir created the helmet and armour used in the film. The sound of the respirator function of Vader's mask was created by Ben Burtt using modified recordings of scuba breathing apparatus used by divers. The sound effect is trademarked in the"))
+```
+
+The Wikipedia passage data (`psgs_w100.tsv`) is available on the [DPR website](https://github.com/facebookresearch/DPR). At the time of writing, the file can be downloaded by cloning the DPR repository and running the following command:
+
+```bash
+python data/download_data.py --resource data.wikipedia_split.psgs_w100
+```
 
 ## Reproducing Experiments
 

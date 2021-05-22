@@ -1,3 +1,4 @@
+import csv
 import json
 import dataclasses
 from typing import Iterator
@@ -37,3 +38,26 @@ class PassageDB:
             for id_str, json_str in iter(cursor):
                 title, text = json.loads(json_str.decode("utf-8"))
                 yield Passage(int(id_str.decode("utf-8")), title, text)
+
+
+class InMemoryPassageDB(PassageDB):
+    def __init__(self, input_file: str):
+        self.data = {}
+        with open(input_file) as i_f:
+            tsv_reader = csv.reader(i_f, delimiter="\t")
+            for row in tsv_reader:
+                if row[0] == "id":
+                    continue  # ignoring header
+                _id, text, title = int(row[0]), row[1], row[2]
+                self.data[_id] = (text, title)
+
+    def __len__(self):
+        return len(self.data)
+
+    def __getitem__(self, id_: int) -> Passage:
+        title, text = self.data[id_]
+        return Passage(id_, title, text)
+
+    def __iter__(self) -> Iterator[Passage]:
+        for id_, (text, title) in self.data.items():
+            yield Passage(id_, title, text)
