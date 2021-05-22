@@ -4,11 +4,13 @@ Binary Passage Retriever (BPR) is an efficient neural retrieval model for
 open-domain question answering. BPR integrates a _learning-to-hash_ technique
 into [Dense Passage Retriever (DPR)](https://github.com/facebookresearch/DPR) to
 **represent the passage embeddings using compact binary codes** rather than
-continuous vectors. It substantially **reduces the memory size without a loss of accuracy** tested on Natural Questions and TriviaQA datasets.
+continuous vectors. It substantially **reduces the memory size without a loss of
+accuracy** tested on Natural Questions and TriviaQA datasets.
 
-BPR was originally developed to improve the computational efficiency of the [Sōseki question
-answering system](https://demo.soseki.ai/) submitted to the [Systems under 6GB track](https://ai.google.com/research/NaturalQuestions/efficientqa) in the
-[NeurIPS 2020 EfficientQA competition](https://efficientqa.github.io/).
+BPR was originally developed to improve the computational efficiency of the
+[Sōseki question answering system](https://demo.soseki.ai/) submitted to the
+[Systems under 6GB track](https://ai.google.com/research/NaturalQuestions/efficientqa)
+in the [NeurIPS 2020 EfficientQA competition](https://efficientqa.github.io/).
 Please refer to [our ACL 2021 paper](#) for further technical details.
 
 ## Installation
@@ -32,39 +34,45 @@ pip install -r requirements.txt
 
 **BPR fine-tuned on the Natural Questions dataset:**
 
-* [Checkpoint file](https://drive.google.com/file/d/1BibJ0GQn6rvKfEBksPMeyx-vl3s57vT7/view?usp=sharing) (836MB)
-* [Index file](https://drive.google.com/file/d/1hTnTi1r_6lGfUmJ9RWbx3ciX8r6GDrOT/view?usp=sharing) (2.1GB)
+- [Checkpoint file](https://drive.google.com/file/d/1BibJ0GQn6rvKfEBksPMeyx-vl3s57vT7/view?usp=sharing)
+  (836MB)
+- [Index file](https://drive.google.com/file/d/1hTnTi1r_6lGfUmJ9RWbx3ciX8r6GDrOT/view?usp=sharing)
+  (2.1GB)
 
 **BPR fine-tuned on the TriviaQA dataset:**
 
-* [Checkpoint file](https://drive.google.com/file/d/1ehbpUo0EmAW61Jc72xi1S02548p0Dw6I/view?usp=sharing) (836MB)
-* [Index file](https://drive.google.com/file/d/1EqGAkxIrg6TkVG72kCYMdH7jUIsQFvte/view?usp=sharing) (2.1GB)
+- [Checkpoint file](https://drive.google.com/file/d/1ehbpUo0EmAW61Jc72xi1S02548p0Dw6I/view?usp=sharing)
+  (836MB)
+- [Index file](https://drive.google.com/file/d/1EqGAkxIrg6TkVG72kCYMdH7jUIsQFvte/view?usp=sharing)
+  (2.1GB)
 
 ## Example Usage
 
-
 ```python
->>> from bpr import BiEncoder, FaissBinaryIndex, InMemoryPassageDB, Retriever
 >>> import faiss
+>>> from bpr import BiEncoder, FaissBinaryIndex, InMemoryPassageDB, Retriever
 # Load the model from the checkpoint file
->>> biencoder = BiEncoder.load_from_checkpoint("<CHECKPOINT_FILE>")
+>>> biencoder = BiEncoder.load_from_checkpoint("bpr_finetuned_nq.ckpt")
 >>> biencoder.eval()
 >>> biencoder.freeze()
 # Load Wikipedia passages into memory
->>> passage_db = InMemoryPassageDB("<DPR_DATASET_DIR>/wikipedia_split/psgs_w100.tsv")
+>>> passage_db = InMemoryPassageDB("psgs_w100.tsv")
 # Load the index
->>> base_index = faiss.read_index_binary("<INDEX_FILE>")
+>>> base_index = faiss.read_index_binary("bpr_finetuned_nq.idx")
 >>> index = FaissBinaryIndex(base_index)
 # Instantiate the Retriever
 >>> retriever = Retriever(index, biencoder, passage_db)
 # Encode queries into embeddings
->>> query_embeddings = retriever.encode_queries(["who is under the mask of darth vader"])
+>>> query_embeddings = retriever.encode_queries(["what is the tallest mountain in the world"])
 # Get top-k results
 >>> retriever.search(query_embeddings, k=100)[0][0]
-Candidate(id=650642, score=95.28644561767578, passage=Passage(id=650642, title='Darth Vader', text="that McQuarrie's earliest conception of Vader was so successful that very little needed to be changed for production. Working from McQuarrie's designs, the costume designer John Mollo devised a costume that could be worn by an actor on-screen using a combination of clerical robes, a motorcycle suit, a German military helmet and a gas mask. The prop sculptor Brian Muir created the helmet and armour used in the film. The sound of the respirator function of Vader's mask was created by Ben Burtt using modified recordings of scuba breathing apparatus used by divers. The sound effect is trademarked in the"))
+Candidate(id=525426, score=94.51324462890625, passage=Passage(id=525426, title='per year (upwards) and per year (northeastwards), but another account mentions more lateral movement (), and even shrinkage has been suggested. The summit of Everest is the point at which earth\'s surface reaches the greatest distance above sea level. Several other mountains are sometimes claimed to be the "tallest mountains on earth". Mauna Kea in Hawaii is tallest when measured from its base; it rises over when measured from its base on the mid-ocean floor, but only attains above sea level. By the same measure of base to summit, Denali, in Alaska, also known as Mount McKinley, is taller than', text='Mount Everest'))
 ```
 
-The Wikipedia passage data (`psgs_w100.tsv`) is available on the [DPR website](https://github.com/facebookresearch/DPR). At the time of writing, the file can be downloaded by cloning the DPR repository and running the following command:
+The Wikipedia passage data (`psgs_w100.tsv`) is available on the
+[DPR website](https://github.com/facebookresearch/DPR). At the time of writing,
+the file can be downloaded by cloning the DPR repository and running the
+following command:
 
 ```bash
 python data/download_data.py --resource data.wikipedia_split.psgs_w100
@@ -191,7 +199,11 @@ python evaluate_reader.py \
 
 ## License
 
-<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a><br />This
+work is licensed under a
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative
+Commons Attribution-NonCommercial 4.0 International License</a>.
+
 ## Citation
 
 If you find this work useful, please cite the following paper:
