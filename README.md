@@ -66,7 +66,7 @@ pip install -r requirements.txt
 >>> query_embeddings = retriever.encode_queries(["what is the tallest mountain in the world"])
 # Get top-k results
 >>> retriever.search(query_embeddings, k=100)[0][0]
-Candidate(id=525426, score=94.51324462890625, passage=Passage(id=525426, title='per year (upwards) and per year (northeastwards), but another account mentions more lateral movement (), and even shrinkage has been suggested. The summit of Everest is the point at which earth\'s surface reaches the greatest distance above sea level. Several other mountains are sometimes claimed to be the "tallest mountains on earth". Mauna Kea in Hawaii is tallest when measured from its base; it rises over when measured from its base on the mid-ocean floor, but only attains above sea level. By the same measure of base to summit, Denali, in Alaska, also known as Mount McKinley, is taller than', text='Mount Everest'))
+Candidate(id=525407, score=93.59397888183594, passage=Passage(id=525407, title='Mount Everest', text="Mount Everest Mount Everest, known in Nepali as Sagarmatha () and in Tibetan as Chomolungma (), is Earth's highest mountain above sea level, located in the Mahalangur Himal sub-range of the Himalayas. The international border between Nepal (Province No. 1) and China (Tibet Autonomous Region) runs across its summit point. The current official elevation of , recognized by China and Nepal, was established by a 1955 Indian survey and subsequently confirmed by a Chinese survey in 1975. In 2005, China remeasured the rock height of the mountain, with a result of 8844.43 m. There followed an argument between China and"))
 ```
 
 The Wikipedia passage data (`psgs_w100.tsv`) is available on the

@@ -55,7 +55,7 @@ class InMemoryPassageDB(PassageDB):
         return len(self.data)
 
     def __getitem__(self, id_: int) -> Passage:
-        title, text = self.data[id_]
+        text, title = self.data[id_]
         return Passage(id_, title, text)
 
     def __iter__(self) -> Iterator[Passage]:
