@@ -207,7 +207,9 @@ Commons Attribution-NonCommercial 4.0 International License</a>.
 
 ## Citation
 
-If you find this work useful, please cite the following paper:
+If you find this work useful, please cite [our paper:
+
+[Efficient Passage Retrieval with Hashing for Open-domain Question Answering](https://arxiv.org/abs/2106.00882)
 
 ```
 @inproceedings{yamada2021bpr,
