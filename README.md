@@ -1,4 +1,4 @@
-# BPR
+# Binary Passage Retriever
 
 Binary Passage Retriever (BPR) is an efficient neural retrieval model for
 open-domain question answering. BPR integrates a _learning-to-hash_ technique
@@ -11,7 +11,8 @@ BPR was originally developed to improve the computational efficiency of the
 [Sōseki question answering system](https://demo.soseki.ai/) submitted to the
 [Systems under 6GB track](https://ai.google.com/research/NaturalQuestions/efficientqa)
 in the [NeurIPS 2020 EfficientQA competition](https://efficientqa.github.io/).
-Please refer to [our ACL 2021 paper](#) for further technical details.
+Please refer to [our ACL 2021 paper](https://arxiv.org/abs/2106.00882) for
+further technical details.
 
 ## Installation
 
@@ -64,7 +65,7 @@ pip install -r requirements.txt
 >>> retriever = Retriever(index, biencoder, passage_db)
 # Encode queries into embeddings
 >>> query_embeddings = retriever.encode_queries(["what is the tallest mountain in the world"])
-# Get top-k results
+# Get top-100 results
 >>> retriever.search(query_embeddings, k=100)[0][0]
 Candidate(id=525407, score=93.59397888183594, passage=Passage(id=525407, title='Mount Everest', text="Mount Everest Mount Everest, known in Nepali as Sagarmatha () and in Tibetan as Chomolungma (), is Earth's highest mountain above sea level, located in the Mahalangur Himal sub-range of the Himalayas. The international border between Nepal (Province No. 1) and China (Tibet Autonomous Region) runs across its summit point. The current official elevation of , recognized by China and Nepal, was established by a 1955 Indian survey and subsequently confirmed by a Chinese survey in 1975. In 2005, China remeasured the rock height of the mountain, with a result of 8844.43 m. There followed an argument between China and"))
 ```
