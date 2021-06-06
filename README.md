@@ -14,6 +14,26 @@ in the [NeurIPS 2020 EfficientQA competition](https://efficientqa.github.io/).
 Please refer to [our ACL 2021 paper](https://arxiv.org/abs/2106.00882) for
 further technical details.
 
+## News
+
+### June 6, 2021: New Model Trained Using Natural Questions with Improved Negative Examples
+
+We conducted a follow-up experiment using the new
+[Natural Questions training data with improved negative examples](https://github.com/facebookresearch/DPR/tree/8bacf08fa9be0677f5b9ef973b1cc181cc66a2af#new-march-2021-retrieval-model).
+BPR generally achieved similar performance to DPR with substantially reduced
+index size. The results of HNSW and HNSW-SQ were obtained using the DPR code
+([8bacf08](https://github.com/facebookresearch/DPR/tree/8bacf08fa9be0677f5b9ef973b1cc181cc66a2af)).
+
+| Model   | Faiss index type | Index size | Top 1 | Top 20 | Top 100 | Query time |
+| ------- | ---------------- | ---------- | ----- | ------ | ------- | ---------- |
+| New BPR | Binary flat      | 2GB        | 49.0  | 80.5   | 87.0    | 85 ms      |
+| New BPR | Binary hash      | 2GB        | 49.0  | 80.5   | 87.0    | 38 ms      |
+| New DPR | Flat             | 61GB       | 52.5  | 81.3   | 87.3    | 457ms      |
+| New DPR | HNSW             | 141GB      | 52.2  | 81.0   | 86.8    | 2ms        |
+| New DPR | HNSW-SQ          | 36GB       | 52.0  | 80.9   | 86.9    | 2ms        |
+
+The fine-tuned checkpoint and index files are provided below.
+
 ## Installation
 
 BPR can be installed using [Poetry](https://python-poetry.org/):
@@ -38,6 +58,14 @@ pip install -r requirements.txt
 - [Checkpoint file](https://drive.google.com/file/d/1BibJ0GQn6rvKfEBksPMeyx-vl3s57vT7/view?usp=sharing)
   (836MB)
 - [Index file](https://drive.google.com/file/d/1hTnTi1r_6lGfUmJ9RWbx3ciX8r6GDrOT/view?usp=sharing)
+  (2.1GB)
+
+**BPR fine-tuned on the
+[Natural Questions dataset with improved negative examples](https://github.com/facebookresearch/DPR/tree/8bacf08fa9be0677f5b9ef973b1cc181cc66a2af#new-march-2021-retrieval-model):**
+
+- [Checkpoint file](https://drive.google.com/file/d/1cDK7zKw6jUc4n6w95VlaPNf8fYWtUFGw/view?usp=sharing)
+  (836MB)
+- [Index file](https://drive.google.com/file/d/1Sqf3XHCG3Vw85-7p_yWUMX3wZrlfLWjl/view?usp=sharing)
   (2.1GB)
 
 **BPR fine-tuned on the TriviaQA dataset:**
